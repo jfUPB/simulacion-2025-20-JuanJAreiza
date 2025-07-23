@@ -28,6 +28,8 @@ Si, pero al mismo tiempo me llevé una sorpresa porque el efecto visual que se c
 ### Actividad 5:
 
 Código:
+
+``` js
 let totalBoxs = 50;
 let boxs = new Array(totalBoxs).fill(0);
 
@@ -51,8 +53,9 @@ function draw() {
     rect(j * w, height - h, w - 1, h);
   }
 }
+```
 
-Enlace: http://editor.p5js.org/JuanJAreiza/sketches/7t18PX7T8
+Enlace: [Mi proyecto en p5.js](http://editor.p5js.org/JuanJAreiza/sketches/7t18PX7T8)
 
 Captura de pantalla:
 <img width="1097" height="500" alt="image" src="https://github.com/user-attachments/assets/743ee148-4541-43c7-b10b-517bddbba560" />
@@ -64,6 +67,8 @@ Usé está técnica en el primer ejercicio del Walker que era el que representab
 Lo que espero que suceda es que con el cambio de color para cada Walker, se pueda diferenciar y crear pinceladas creativas en el lienzo, gracias a que puedan haber desplazamientos largos y cortos de forma aleatoria todo el tiempo. Además, ver de alguna manera el corrido que hace al haberle modificado la transparencia del propio color.
 
 Código:
+
+``` js
 let walker;
 let walker2;
 let walker3;
@@ -124,6 +129,7 @@ class Walker {
     this.y = constrain(this.y, 0, height);
   }
 }
+```
 
 Enlace: https://editor.p5js.org/JuanJAreiza/sketches/8GPFVNSlr
 
@@ -134,6 +140,8 @@ Captura de pantalla: <img width="1258" height="1030" alt="image" src="https://gi
 - Espero obtener el concepto mismo, es decir, una generación aleatoria de subidas y bajadas pero de una forma suavizada, que se desplace para que todo el tiempo se renueve y genere nuevo movimiento.
 
 Código:
+
+``` js
 let xoff = 0;
 
 function setup() {
@@ -155,6 +163,7 @@ function draw() {
 
   xoff += 0.01; //Para que se mueva horizontal
 }
+```
 
 Enlace: https://editor.p5js.org/JuanJAreiza/sketches/28DAGX24H
 
