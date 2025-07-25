@@ -26,7 +26,7 @@ Parte 2:
 
 ### Actividad 10: Coevaluación
 1. Mi compañero es: JuanSMarin2
-2. Hecho.
+2. [Enlace de su entrega](https://editor.p5js.org/JuanSMarin2/sketches/KRXUBuzGr)
 3. Hecho.
 4. 5/5. Me parece que cumple con todos los requerimientos de la entrega. Combina Perlin, Distribución Uniforme y no Uniforme. Permite la interacción del usuario cambiando las probabilidades de estas distribuciones. Habría estado interesante si en escena existieran mas circulos en movimiento, para que más rapidamente se generen formas y estilos.
 5. Hecho.
