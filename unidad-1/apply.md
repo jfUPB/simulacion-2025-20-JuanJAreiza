@@ -103,7 +103,7 @@ class Walker {
 ```
 
 ### Enlace:
-[Pinceladas vivas] (https://editor.p5js.org/JuanJAreiza/sketches/1BesSufHm)
+[Pinceladas vivas](https://editor.p5js.org/JuanJAreiza/sketches/1BesSufHm)
 
 ### Captura de pantalla:
 <img width="2080" height="1024" alt="image" src="https://github.com/user-attachments/assets/04a618b4-5a4d-48d9-b139-13cbed731cd7" />
