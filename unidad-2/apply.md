@@ -70,6 +70,10 @@ function keyPressed() {
   if (key === 'n' || key === 'N') {
     usarNoise = !usarNoise;
   }
+  if (key === "s" || key === "S") {
+    saveCanvas("myCanvas", "png");
+  }
+
 }
 
 
@@ -140,5 +144,6 @@ if (usarLevy) {
 
 7. Captura de pantalla:
 <img width="2270" height="957" alt="image" src="https://github.com/user-attachments/assets/c3c5e415-09c5-4968-8624-bd2546447e3d" />
+
 
 
