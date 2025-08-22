@@ -14,7 +14,7 @@
    
 4. La diferencia recae sobre que modelar fuerzas implica consideraciones en gravedades, masa, coeficientes, etc. Un algoritmo de aceleración solo es la aplicación de estas fuerzas sobre la velocidad para generar un desplazamiento en el objeto en cada frame.
 
-### Parte 2:
+#### Parte 2:
 1. Tal vez tuve complejidad en el concepto creativo. La falta de tiempo provocó que tuviera que acudir a lo mas obvio, recrear de alguna manera su estética física de las obras. Me hubiera gustado haber hecho algo mas conceptual, pero aún así, creo que quedó algo donde logré aplicar bien los demás requerimientos. Entonces quedé feliz :D
 
 2. Inicialmente tuve varios intentos, entonces después de buenas horas logré los resultados que buscaba. En el que me dí cuenta que algo andaba mal, de la forma más curiosa, fue cuando modelando la de resistencia de aire, quise hacerlo similar a fluidos y al reducir el coeficiente hasta cierta cantidad, las particulas comenzaban a rebotar locamente por toda la "superficie" del agua.
@@ -49,3 +49,4 @@
 3. __Conexión arte-física:__ Sí, totalmente. Se siente como mencioné anteriormente, como si tuviera un pequeño laboratorío de experimentos para probar diferentes fénomenos y simulaciones. Eso da pie a que se vuelva una gran herramienta para crear cosas diferentes, que no se podrían o serían muy complejas en nuestro plano físico.
   
 4. __Comentario adicional:__ Que me gustaría ver formas diversas de implementarlas con los próximos temas que vienen :)
+
