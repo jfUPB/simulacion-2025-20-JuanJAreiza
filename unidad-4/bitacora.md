@@ -1,5 +1,14 @@
 # Evidencias de la unidad 4
 
+Referentes de sonido en p5.js:
+David Bouchard. Sonification
+Mister Bomb
+
+Lévy Flight, Perlin, Gaussiana, Random.
+Motion 101: Fricción, Resistencia del aire y de fluidos o Atracción gravitacional.
+LerpColor, Lerp.
+Pendulos, resortes u ondas: velocidad angular, frecuencia, periodo, amplitud y fase.
+
 ## Explicación conceptual de la obra
 
 * ¿Qué concepto de la unidad 4 y cómo lo aplicaste en la obra?
@@ -24,7 +33,7 @@
 
 ## Enlace a la obra en el editor de p5.js
 
-[Aquí está mi obra](URL)
+[Aquí está mi obra](https://editor.p5js.org/JuanJAreiza/sketches/QUCoOpCqJ)
 
 ## Código de la obra 
 
@@ -33,6 +42,7 @@
 ```
 
 ## Captura de pantalla representativa
+
 
 
 
