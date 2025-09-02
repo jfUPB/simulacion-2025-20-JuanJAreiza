@@ -6,11 +6,11 @@
 > Tu respuesta aquí:
 El concepto central es en base a los __péndulos__. Construí tres doble péndulos que comparten un mismo origen, pero cada uno tiene características físicas diferenciadoras y responden a funciones diferentes con respecto a la música.
 
-- __Péndulo #1:__ corto, morado oscuro, influenciado por los __altos__.
-- __Péndulo #2:__ mediano, naranja, influenciado por el __volumen__.
-- __Péndulo #3:__ largo, azul oscuro, influenciado por los __bajos__.
+>- __Péndulo #1:__ corto, morado oscuro, influenciado por los __altos__.
+>- __Péndulo #2:__ mediano, naranja, influenciado por el __volumen__.
+>- __Péndulo #3:__ largo, azul oscuro, influenciado por los __bajos__.
 
-Cada péndulo tiene límites en sus velocidades para evitar __loops de circulos__, __bugs en su comportamiento__ o __poca variabilidad__. Además, para equilibrar la relación entre música y movimiento físico, agregué un __intervalo de 3 segundos en la lectura de bajos, altos y volumen__. Esto evita que las variaciones musicales generen un movimiento demasiado caótico o no deje apreciar la naturalidad de la física, manteniendo un balance entre el modelo del péndulo y la influencia de la música aplicada.
+>Cada péndulo tiene límites en sus velocidades para evitar __loops de circulos__, __bugs en su comportamiento__ o __poca variabilidad__. Además, para equilibrar la relación entre música y movimiento físico, agregué un __intervalo de 3 segundos en la lectura de bajos, altos y volumen__. Esto evita que las variaciones musicales generen un movimiento demasiado caótico o no deje apreciar la naturalidad de la física, manteniendo un balance entre el modelo del péndulo y la influencia de la música aplicada.
 
 * ¿Qué concepto de la unidad 3 y cómo lo aplicaste en la obra?
 > Tu respuesta aquí:
@@ -357,6 +357,7 @@ function keyPressed() {
 
 ## Captura de pantalla representativa
 ![obraUnidad4](https://github.com/user-attachments/assets/b1006b00-0226-4bc3-befd-c7edc306e37a)
+
 
 
 
