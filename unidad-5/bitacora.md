@@ -625,7 +625,6 @@ __Sus controles son:__
 >C para limpiar el Canva y empezar desde cero.
 
 __Conceptos que utilicé:__
->Atracción gravitacional.
 >Péndulos.
 >LerpColor.
 >Gravedad.
@@ -633,15 +632,12 @@ __Conceptos que utilicé:__
 >Random.
 
 ## Enlace a la obra en el editor de p5.js
-[Aquí está mi experimento](https://editor.p5js.org/JuanJAreiza/sketches/a0aXtJm14)
+[Aquí está mi obra](https://editor.p5js.org/JuanJAreiza/sketches/a0aXtJm14)
 
 ## Código de la obra 
 
 ``` js
-// "Columpios del Azar" — versión sin pause ni pooling
-// Concepts: Péndulos (unidad 4), Motion101 (unidad 2), Random (unidad 1), Lerp (unidad 3)
-// Herencia: Particle -> PendulumBall, Comet, Bubble
-// Interaction: click = new pendulum, mouse near pendulum = push, c = clear, 1 = palette
+// "Columpios del Azar"
 
 let pendulums = [];   // array con emisores (pivotes)
 let palettes = [];
@@ -673,7 +669,7 @@ function draw() {
   noStroke();
   fill(255, 180);
   textSize(12);
-  text("click = add pendulum | mouse near pendulum = push | c = clear | 1 = palette", 10, height - 12);
+  text("Click = Agregar péndulo | Arrastra el mouse cerca de un péndulo para empujarlo | L = Limpiar Canva | P = Cambiar paleta de colores | S = Pantallazo de la obra", 10, height - 12);
 
   // actualizar y dibujar cada péndulo (siempre emiten)
   for (let p of pendulums) {
@@ -688,7 +684,7 @@ function mousePressed() {
 }
 
 function keyPressed() {
-  if (key === 'c' || key === 'C') {
+  if (key === 'L' || key === 'l') {
     pendulums = [];
   }
   if (key === 'P' || key === 'p') palIndex = (palIndex + 1) % palettes.length;
@@ -709,7 +705,7 @@ class PendulumEmitter {
     this.damping = 0.995; // amortiguamiento angular
     this.rate = 2; // particles per frame
     this.particles = [];
-    this.max = 50;
+    this.max = 25;
     // estética
     this.highlighted = false;
     // paleta local (se actualiza con la global al emitir)
@@ -724,9 +720,10 @@ class PendulumEmitter {
       // probabilidad para tipo
       let r = random();
       let p;
-      if (r < 0.6) p = new PendulumBall(this.getBobPos().x, this.getBobPos().y, this);
-      else if (r < 0.9) p = new Comet(this.getBobPos().x, this.getBobPos().y);
-      else p = new Bubble(this.getBobPos().x, this.getBobPos().y);
+      if (r < 0.35) p = new PendulumBall(this.getBobPos().x, this.getBobPos().y, this);
+      else if (r < 0.55) p = new Comet(this.getBobPos().x, this.getBobPos().y);
+      else if (r < 0.7) p = new Bubble(this.getBobPos().x, this.getBobPos().y);
+      else p = new ColorShifter(this.getBobPos().x, this.getBobPos().y);
 
       // asignar paleta actual
       let pal = palettes[palIndex];
@@ -952,8 +949,65 @@ class Bubble extends Particle {
   }
 }
 
+// -------------------- ColorShifter (usa LerpColor de rosa a morado y viceversa) --------------------
+// -------------------- ColorShifter (flota lento, cambia de color y deja estela) --------------------
+class ColorShifter extends Particle {
+  constructor(x, y) {
+    super(x, y);
+    this.size = random(6, 12);
+    this.mass = random(0.6, 1.2);
+    this.lifespan = random(140, 200);
+    this.maxLifespan = this.lifespan; // para mapear t correctamente
+    this.trail = [];
+
+    // Colores bien definidos
+    if (palIndex % 2 === 0) {
+      this.startCol = color(255, 80, 180);   // rosa vibrante
+      this.endCol = color(100, 70, 255);     // morado vibrante
+    } else {
+      this.startCol = color(100, 70, 255);
+      this.endCol = color(255, 80, 180);
+    }
+
+    this.velocity = createVector(random(-0.2, 0.2), random(-0.5, -0.1));
+  }
+
+  run() {
+    this.applyForce(createVector(0, -0.01 * this.mass));
+    this.applyForce(createVector(sin(frameCount * 0.03 + this.phase) * 0.002, 0));
+    this.update();
+
+    this.trail.push(this.position.copy());
+    if (this.trail.length > 15) this.trail.shift();
+
+    this.show();
+  }
+
+  show() {
+    let t = map(this.lifespan, 0, this.maxLifespan, 0, 1);
+    t = constrain(t, 0, 1);
+    let baseCol = lerpColor(this.endCol, this.startCol, t);
+
+    // Estela
+    noFill();
+    for (let i = 0; i < this.trail.length; i++) {
+      let p = this.trail[i];
+      let alpha = map(i, 0, this.trail.length - 1, 30, 100);
+      let sz = map(i, 0, this.trail.length - 1, this.size * 0.2, this.size);
+      stroke(red(baseCol), green(baseCol), blue(baseCol), alpha);
+      circle(p.x, p.y, sz);
+    }
+
+    // Partícula principal
+    let alpha = map(this.lifespan, 0, this.maxLifespan, 0, 255);
+    noStroke();
+    fill(red(baseCol), green(baseCol), blue(baseCol), alpha);
+    circle(this.position.x, this.position.y, this.size);
+  }
+}
 ```
 
 * __Captura de pantalla representativa__
 ![obraUnidad5](https://github.com/user-attachments/assets/90c31973-bb19-4575-86b3-b0e459b73699)
+
 
