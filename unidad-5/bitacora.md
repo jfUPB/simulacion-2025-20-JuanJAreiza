@@ -615,14 +615,16 @@ class Emitter {
 ### Apply.
 
 * __Descripción del Diseño de la obra__
-La obra se llama __"Columpios del Azar"__. La idea es una hilera de péndulos/columpios colgando del techo que, al balancearse, generan partículas. Esas partículas no son solo “puntos que caen”: unas son pequeños circulos que siguen el vaivén del péndulo, otras son cometas que dejan rastro y otras burbujas que flotan suavemente. Quiero que la obra sea clara en su ritmo propio de un péndulo y las variaciones en cada partícula que lo hace sentir vivo. Es un contraste entre lo uniforme y lo "caótico".
+La obra se llama __"La Alborada"__. La idea principal nació como una hilera de péndulos colgando de un mismo hilo que, al balancearse, generan partículas de forma aleatoría, muy similar a las explosiones de los fuegos pirotécnicos. Esas partículas no pueden ser solo “puntos que caen” por el Canvas: cada tipo tiene sus características; unas son pequeños circulos que siguen el vaivén del péndulo, otras son cometas que dejan rastro, otras burbujas que flotan suavemente y otras que dejan fuertes estelas cuadradas mientras levitan. Quiero que la obra tenga un buen equilibrio entre el ritmo propio de un péndulo y las variaciones en cada partícula que lo haga sentir vivo, así como se siente La Alborada. Es un contraste entre lo uniforme de quién lo genera y lo "caótico" al explotar.
 
-Me imagino su interactividad como la herramienta y posibilidad al usuario de crear mas péndulos por el espacio y cambiar sus colores (por predefinidos) cuando desee.
+Su interactividad nace desde la posibilidad de ser participe, junto a la __música__, de manipular los péndulos y sus colores para crear expresiones y comportamientos nuevos constantemente.
 
 __Sus controles son:__
 >S para guardar.
 >P para cambiar la paleta de color.
 >C para limpiar el Canva y empezar desde cero.
+>Click para agregar nuevos péndulos y arrastrando para empujar los ya existentes.
+>Espacio para reproducir o pausar música.
 
 __Conceptos que utilicé:__
 >Péndulos.
@@ -632,160 +634,188 @@ __Conceptos que utilicé:__
 >Random.
 
 ## Enlace a la obra en el editor de p5.js
-[Aquí está mi obra](https://editor.p5js.org/JuanJAreiza/sketches/a0aXtJm14)
+[Aquí está mi obra](https://editor.p5js.org/JuanJAreiza/sketches/iSKbP16we)
 
 ## Código de la obra 
 
 ``` js
-// "Columpios del Azar"
+// "Alborada"
 
-let pendulums = [];   // array con emisores (pivotes)
-let palettes = [];
-let palIndex = 0;
+let pendulums = [];
+let globalPalettes = [];
+let globalPalIndex = 0;
+const MAX_PENDULUMS = 8;
+
+let song, fft, amplitude;
+let isPlaying = false;
+let baseBgColor1, baseBgColor2;
+
+function preload() {
+  song = loadSound('Song.mp3');
+}
 
 function setup() {
   createCanvas(960, 540);
   colorMode(RGB);
-  // definimos paletas
-  palettes = [
-    { a: color(255, 150, 90), b: color(255, 240, 210) },
-    { a: color(90, 150, 255), b: color(200, 230, 255) },
-    { a: color(160, 255, 200), b: color(220, 255, 240) }
+
+  fft = new p5.FFT();
+  amplitude = new p5.Amplitude();
+
+  globalPalettes = [
+    { name: "Cálidos", a: color(255, 150, 90), b: color(255, 240, 210) },
+    { name: "Fríos", a: color(90, 150, 255), b: color(200, 230, 255) },
+    { name: "Verdes", a: color(160, 255, 200), b: color(220, 255, 240) },
+    { name: "Atardecer", a: color(255, 100, 100), b: color(255, 200, 150) },
+    { name: "Profundo", a: color(50, 50, 150), b: color(100, 100, 200) },
+    { name: "Bosque", a: color(80, 150, 80), b: color(150, 200, 150) }
   ];
 
-  // crear algunos péndulos iniciales
+  baseBgColor1 = color(18, 22, 30);
+  baseBgColor2 = color(50, 60, 80);
+
   let spacing = width / 6;
   for (let i = 1; i <= 4; i++) {
     let x = i * spacing;
-    pendulums.push(new PendulumEmitter(x, 80, random(90, 220)));
+    pendulums.push(new PendulumEmitter(x, height / 2, random(90, 220)));
   }
 }
 
 function draw() {
-  // fondo con leves trails, siempre corriendo (sin pause)
-  background(18, 22, 30, 18);
+  let spectrum = fft.analyze();
+  let bass = fft.getEnergy("bass");
+  let treble = fft.getEnergy("treble");
+  let vol = amplitude.getLevel();
 
-  // instrucciones
-  noStroke();
-  fill(255, 180);
-  textSize(12);
-  text("Click = Agregar péndulo | Arrastra el mouse cerca de un péndulo para empujarlo | L = Limpiar Canva | P = Cambiar paleta de colores | S = Pantallazo de la obra", 10, height - 12);
+  let mappedBass = map(bass, 0, 255, 0.005, 0.08);
+  let mappedVol = map(vol, 0, 0.5, 0.005, 0.05);
 
-  // actualizar y dibujar cada péndulo (siempre emiten)
+  let bgLerpFactor = map(vol, 0, 0.3, 0, 1, true);
+  let dynamicBgColor = lerpColor(baseBgColor1, baseBgColor2, bgLerpFactor);
+  background(red(dynamicBgColor), green(dynamicBgColor), blue(dynamicBgColor), 18);
+
   for (let p of pendulums) {
+    if (isPlaying) {
+      if (bass > 180 && random() < 0.2) {
+        p.applyPush(random(-mappedBass, mappedBass));
+      }
+      p.applyForceToPendulum(createVector(sin(frameCount * 0.05 + p.angle) * mappedVol, 0));
+      p.aVel += map(treble, 0, 255, 0, 0.0005) * random(-1, 1);
+    }
     p.run();
     p.emit();
   }
+
+  noStroke();
+  fill(255, 180);
+  textSize(12);
+  text("Click = Agregar péndulo (máx " + MAX_PENDULUMS + ") | Arrastrar mouse = empuje | L = Limpiar | P = Cambiar paleta | S = Pantallazo | ESPACIO = Play/Pause", 10, height - 12);
 }
 
 function mousePressed() {
-  // nuevo péndulo en X del mouse
-  pendulums.push(new PendulumEmitter(mouseX, 80, random(80, 260)));
+  if (pendulums.length < MAX_PENDULUMS) {
+    pendulums.push(new PendulumEmitter(mouseX, height / 2, random(80, 260)));
+  }
 }
 
 function keyPressed() {
   if (key === 'L' || key === 'l') {
     pendulums = [];
   }
-  if (key === 'P' || key === 'p') palIndex = (palIndex + 1) % palettes.length;
-  
+  if (key === 'P' || key === 'p') {
+    globalPalIndex = (globalPalIndex + 1) % globalPalettes.length;
+    for (let pEmitter of pendulums) {
+      for (let particle of pEmitter.particles) {
+        particle.setRandomPalette();
+      }
+    }
+  }
   if (key === 'S' || key === 's') saveCanvas('obraUnidad5', 'jpg');
+  if (key === ' ') {
+    if (song.isPlaying()) {
+      song.pause();
+      isPlaying = false;
+    } else {
+      song.play();
+      isPlaying = true;
+    }
+  }
 }
-
-// -------------------- PendulumEmitter --------------------
 class PendulumEmitter {
-  // x,y = pivot position; len = cord length
   constructor(x, y, len) {
     this.anchor = createVector(x, y);
     this.len = len;
-    // parámetros del péndulo (ángulo inicial aleatorio)
     this.angle = random(-PI/6, PI/6);
     this.aVel = 0;
     this.aAcc = 0;
-    this.damping = 0.995; // amortiguamiento angular
-    this.rate = 2; // particles per frame
+    this.damping = 0.995;
+    this.rate = 2;
     this.particles = [];
     this.max = 25;
-    // estética
     this.highlighted = false;
-    // paleta local (se actualiza con la global al emitir)
-    let pal = palettes[palIndex];
-    this.colorFrom = pal.a;
-    this.colorTo = pal.b;
   }
 
   emit() {
     if (this.particles.length > this.max) return;
     for (let i = 0; i < this.rate; i++) {
-      // probabilidad para tipo
       let r = random();
       let p;
-      if (r < 0.35) p = new PendulumBall(this.getBobPos().x, this.getBobPos().y, this);
-      else if (r < 0.55) p = new Comet(this.getBobPos().x, this.getBobPos().y);
+      if (r < 0.3) p = new PendulumBall(this.getBobPos().x, this.getBobPos().y, this);
+      else if (r < 0.5) p = new Comet(this.getBobPos().x, this.getBobPos().y);
       else if (r < 0.7) p = new Bubble(this.getBobPos().x, this.getBobPos().y);
       else p = new ColorShifter(this.getBobPos().x, this.getBobPos().y);
 
-      // asignar paleta actual
-      let pal = palettes[palIndex];
-      p.startCol = pal.a;
-      p.endCol = pal.b;
       this.particles.push(p);
     }
   }
 
   applyPush(strength) {
-    // Empuje al péndulo: modificar velocidad angular
     this.aVel += strength;
+  }
+  
+  applyForceToPendulum(force) {
+    this.aAcc += force.x * 0.001;
   }
 
   getBobPos() {
-    // posición actual del extremo del péndulo según angle
     let x = this.anchor.x + this.len * sin(this.angle);
     let y = this.anchor.y + this.len * cos(this.angle);
     return createVector(x, y);
   }
 
   run() {
-    // detectar mouse cerca para highlight y push
     let dToMouse = dist(mouseX, mouseY, this.anchor.x, this.anchor.y);
     this.highlighted = (dToMouse < 160);
 
-    // física del péndulo: angularAcceleration = - (g / L) * sin(angle)
     let g = 0.8;
     this.aAcc = - (g / this.len) * sin(this.angle);
-    // si mouse está cerca y presiono, aplica pequeño empuje
     if (this.highlighted && mouseIsPressed) {
       let dir = (mouseX > this.anchor.x) ? 0.06 : -0.06;
       this.aAcc += dir * map(dToMouse, 0, 160, 1, 0.1);
     }
 
-    // integrar (Motion101) - siempre
     this.aVel += this.aAcc;
     this.aVel *= this.damping;
     this.angle += this.aVel;
 
-    // dibujar cuerda + bob
     let bob = this.getBobPos();
     stroke(200, 150);
     strokeWeight(1.2);
     line(this.anchor.x, this.anchor.y, bob.x, bob.y);
 
     noStroke();
-    let bobCol = this.highlighted ? color(255, 230, 160) : color(220, 220, 240);
+    let currentGlobalPal = globalPalettes[globalPalIndex];
+    let bobCol = this.highlighted ? color(255, 230, 160) : lerpColor(currentGlobalPal.a, currentGlobalPal.b, 0.5);
     fill(bobCol);
     circle(bob.x, bob.y, 8);
 
     fill(180);
     circle(this.anchor.x, this.anchor.y, 6);
 
-    // actualizar y dibujar partículas asociadas
     for (let i = this.particles.length - 1; i >= 0; i--) {
       let pt = this.particles[i];
-      // influencia del péndulo al nacer
       pt.applyInfluence(this.aVel * 0.2);
       pt.run();
 
-      // Si la partícula murió (por vida o por salirse del canvas), eliminarla
       if (pt.isDead()) {
         this.particles.splice(i, 1);
       }
@@ -793,49 +823,53 @@ class PendulumEmitter {
   }
 }
 
-// -------------------- Particle base --------------------
 class Particle {
   constructor(x, y) {
     this.reset(x, y);
+    this.setRandomPalette();
   }
 
   reset(x, y) {
     this.position = createVector(x + random(-3,3), y + random(-3,3));
-    this.velocity = createVector(random(-0.6,0.6), random(-1.2, -0.2)); // Motion101 basic
+    this.velocity = createVector(random(-0.6,0.6), random(-1.2, -0.2));
     this.acceleration = createVector(0, 0);
     this.lifespan = 200 + random(-30, 30);
     this.mass = random(0.6, 1.6);
-    this.startCol = color(200, 220, 255);
-    this.endCol = color(255, 240, 210);
     this.size = random(3, 8);
     this.phase = random(TWO_PI);
+    this.maxLifespan = this.lifespan;
+  }
+
+  setRandomPalette() {
+    let selectedPalette = random(globalPalettes);
+    this.startCol = selectedPalette.a;
+    this.endCol = selectedPalette.b;
   }
 
   applyForce(f) {
-    // F = ma
     let force = f.copy().div(this.mass);
     this.acceleration.add(force);
   }
 
   applyInfluence(str) {
-    // influence applied by pendulum at birth
     this.applyForce(createVector(str * random(0.5,1.2), 0));
   }
 
   update() {
-    // Motion 101 Euler integration
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
     this.acceleration.mult(0);
-    // life decay
     this.lifespan -= 1.6;
   }
 
   isDead() {
-    // Muere si la vida se acabó o si sale completamente del canvas
-    if (this.lifespan <= 0) return true;
-    if (this.position.x < 0 || this.position.x > width || this.position.y < 0 || this.position.y > height) return true;
-    return false;
+    return (
+      this.lifespan <= 0 ||
+      this.position.x < 0 ||
+      this.position.x > width ||
+      this.position.y < 0 ||
+      this.position.y > height
+    );
   }
 
   run() {
@@ -844,20 +878,18 @@ class Particle {
   }
 
   show() {
-    let t = map(this.lifespan, 0, 250, 0, 1);
-    t = constrain(t, 0, 1);
+    let t = constrain(map(this.lifespan, 0, this.maxLifespan, 0, 1), 0, 1);
     let col = lerpColor(this.endCol, this.startCol, t);
-    fill(red(col), green(col), blue(col), map(this.lifespan, 0, 250, 0, 255));
+    fill(red(col), green(col), blue(col), map(this.lifespan, 0, this.maxLifespan, 0, 255));
     noStroke();
     circle(this.position.x, this.position.y, this.size);
   }
 }
 
-// -------------------- PendulumBall (hereda Particle) --------------------
 class PendulumBall extends Particle {
   constructor(x, y, emitterRef) {
     super(x, y);
-    this.emitter = emitterRef; // referencia al péndulo que la lanzó
+    this.emitter = emitterRef;
     this.size = random(4, 9);
     this.mass = random(0.6, 1.4);
     this.phase = random(TWO_PI);
@@ -876,17 +908,8 @@ class PendulumBall extends Particle {
 
     this.show();
   }
-
-  show() {
-    let lifePct = map(this.lifespan, 0, 250, 0, 1);
-    let col = lerpColor(this.endCol, this.startCol, lifePct);
-    fill(red(col), green(col), blue(col), map(this.lifespan, 0, 250, 0, 255));
-    noStroke();
-    circle(this.position.x, this.position.y, this.size);
-  }
 }
 
-// -------------------- Comet (rápida con rastro) --------------------
 class Comet extends Particle {
   constructor(x, y) {
     super(x, y);
@@ -895,6 +918,7 @@ class Comet extends Particle {
     this.trail = [];
     this.velocity = createVector(random(-2, 2), random(-3, -1));
     this.lifespan = random(50, 100);
+    this.maxLifespan = this.lifespan;
   }
 
   run() {
@@ -911,64 +935,35 @@ class Comet extends Particle {
   show() {
     noFill();
     strokeWeight(1.5);
+    let t = constrain(map(this.lifespan, 0, this.maxLifespan, 0, 1), 0, 1);
+    let trailColor = lerpColor(this.endCol, this.startCol, t);
+
     for (let i = 0; i < this.trail.length; i++) {
       let p = this.trail[i];
       let a = map(i, 0, this.trail.length - 1, 20, 160);
-      stroke(200, 210, 255, a);
+      stroke(red(trailColor), green(trailColor), blue(trailColor), a);
       circle(p.x, p.y, this.size + i * 0.4);
     }
+
     noStroke();
-    let col = lerpColor(this.endCol, this.startCol, map(this.lifespan, 0, 250, 0, 1));
+    let col = lerpColor(this.endCol, this.startCol, t);
     fill(red(col), green(col), blue(col), 255);
     circle(this.position.x, this.position.y, this.size * 1.4);
   }
 }
 
-// -------------------- Bubble (flota, suave) --------------------
-class Bubble extends Particle {
-  constructor(x, y) {
-    super(x, y);
-    this.size = random(6, 14);
-    this.mass = random(0.8, 1.6);
-    this.lifespan = random(120, 220);
-    this.velocity = createVector(random(-0.4, 0.4), random(-1.4, -0.2));
-  }
-
-  run() {
-    this.applyForce(createVector(0, -0.02 * this.mass));
-    this.applyForce(createVector(sin(frameCount * 0.02 + this.phase) * 0.003, 0));
-    this.update();
-    this.show();
-  }
-
-  show() {
-    let col = lerpColor(this.endCol, this.startCol, map(this.lifespan, 0, 250, 0, 1));
-    noStroke();
-    fill(red(col), green(col), blue(col), map(this.lifespan, 0, 250, 0, 180));
-    circle(this.position.x, this.position.y, this.size);
-  }
-}
-
-// -------------------- ColorShifter (usa LerpColor de rosa a morado y viceversa) --------------------
-// -------------------- ColorShifter (flota lento, cambia de color y deja estela) --------------------
 class ColorShifter extends Particle {
   constructor(x, y) {
     super(x, y);
     this.size = random(6, 12);
     this.mass = random(0.6, 1.2);
     this.lifespan = random(140, 200);
-    this.maxLifespan = this.lifespan; // para mapear t correctamente
+    this.maxLifespan = this.lifespan;
     this.trail = [];
-
-    // Colores bien definidos
-    if (palIndex % 2 === 0) {
-      this.startCol = color(255, 80, 180);   // rosa vibrante
-      this.endCol = color(100, 70, 255);     // morado vibrante
-    } else {
-      this.startCol = color(100, 70, 255);
-      this.endCol = color(255, 80, 180);
-    }
-
+    
+    this.startCol = color(255, 80, 180);
+    this.endCol = color(100, 70, 255);
+    
     this.velocity = createVector(random(-0.2, 0.2), random(-0.5, -0.1));
   }
 
@@ -984,30 +979,58 @@ class ColorShifter extends Particle {
   }
 
   show() {
-    let t = map(this.lifespan, 0, this.maxLifespan, 0, 1);
-    t = constrain(t, 0, 1);
+    let t = constrain(map(this.lifespan, 0, this.maxLifespan, 0, 1), 0, 1);
     let baseCol = lerpColor(this.endCol, this.startCol, t);
 
-    // Estela
     noFill();
     for (let i = 0; i < this.trail.length; i++) {
       let p = this.trail[i];
       let alpha = map(i, 0, this.trail.length - 1, 30, 100);
       let sz = map(i, 0, this.trail.length - 1, this.size * 0.2, this.size);
       stroke(red(baseCol), green(baseCol), blue(baseCol), alpha);
-      circle(p.x, p.y, sz);
+      // Cambiado de circle() a rect()
+      rect(p.x - sz / 2, p.y - sz / 2, sz, sz); 
     }
 
-    // Partícula principal
     let alpha = map(this.lifespan, 0, this.maxLifespan, 0, 255);
     noStroke();
     fill(red(baseCol), green(baseCol), blue(baseCol), alpha);
+    // Cambiado de circle() a rect()
+    rect(this.position.x - this.size / 2, this.position.y - this.size / 2, this.size, this.size);
+  }
+}
+
+class Bubble extends Particle {
+  constructor(x, y) {
+    super(x, y);
+    this.size = random(6, 14);
+    this.mass = random(0.8, 1.6);
+    this.lifespan = random(120, 220);
+    this.maxLifespan = this.lifespan;
+    this.velocity = createVector(random(-0.4, 0.4), random(-1.4, -0.2));
+  }
+
+  run() {
+    this.applyForce(createVector(0, -0.02 * this.mass));
+    this.applyForce(createVector(sin(frameCount * 0.02 + this.phase) * 0.003, 0));
+    this.update();
+    this.show();
+  }
+
+  show() {
+    let t = map(this.lifespan, 0, this.maxLifespan, 0, 1);
+    let col = lerpColor(this.endCol, this.startCol, t);
+    noStroke();
+    fill(red(col), green(col), blue(col), map(this.lifespan, 0, this.maxLifespan, 0, 180));
     circle(this.position.x, this.position.y, this.size);
   }
 }
+
 ```
 
 * __Captura de pantalla representativa__
-![obraUnidad5](https://github.com/user-attachments/assets/90c31973-bb19-4575-86b3-b0e459b73699)
+![obra-Unidad5](https://github.com/user-attachments/assets/446660c0-cf48-4dbc-ab92-f5f77dd80a4d)
+
+
 
 
