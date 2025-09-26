@@ -24,13 +24,36 @@
 > Craig Reynolds es el pionero de la simulación del comportamiento autónomo y el que introdujo el concepto de "Boids" en 1986, que refiere al comportamiento colectivo y coordinado que se puede observar en bandadas de pájaros o peces. Él usó diversas fuerzas de dirección para lograr comportamientos complejos y emergentes como:
 
 > Separación: evitar chocar con otros boids.
+
 > Alineación: mover en la misma dirección que los boids cercanos.
+
 > Cohesión: moverse hacia el centro de masa del grupo.
 
 > Estas reglas se implementan como fuerzas de dirección que se suman y afectan la velocidad y trayectoria del agente.
 
 * Actividad 3:
->
+> 1. El campo se guarda como una matriz en dos dimensiones. Es como si fuera un tablero que cubre toda la pantalla y cada casilla del tablero guarda un vector que apunta en cierta dirección; eso quiere decir que el tablero funciona en base al tamaño del Canvas. Ahora, esos vectores no son totalmente aleatorios -si se quiere-, sino que se generan con Perlin noise -en el código original-, que da cambios suaves y continuos. Eso hace que el flujo parezca natural, como si fueran corrientes de agua o viento.
+
+> 2. Cada agente revisa en qué casilla de la cuadrícula está parado según su posición en la pantalla. Luego toma el vector guardado en esa celda y lo convierte en su “velocidad deseada”. Después, compara esa velocidad deseada con la que ya tiene y la diferencia se convierte en la fuerza de dirección. Esa fuerza le dice cuánto debe girar o corregir su rumbo. Todo se limita con un maxforce para que los giros no sean imposibles y se mantenga un movimiento suave.
+
+> 3. __Resolución:__ es el que define el tamaño de cada casilla del campo. __Maxspeed:__ la velocidad máxima que un agente puede alcanzar. __Maxforce:__ la fuerza máxima con la que un agente puede corregir su trayectoria.
+
+> 4. La modificación que hice al código original fue muy básico. Tomé la idea de modificar la resolución del campo y lo que hice fue disminuirla significativamente a 5. Este cambio provocó que aumentara el número de celdas en el canvas y por ende, hubiese más vectores.
+Esto logró que los agentes tuvieran un movimiento más "erratico". Se veían cambiar mas bruscamente de dirección e incluso parecian temblar mientras se desplazaban, pero aún así, el movimiento se ve mas variado y alocado.
+
+> La sección modificada:
+
+> Antes:
+``` js
+flowfield = new FlowField(80);
+```
+
+> Después:
+``` js
+flowfield = new FlowField(5);
+```
+> Captura de pantalla con los vectores activados para ver:
+![experimento (2)](https://github.com/user-attachments/assets/c5a3b522-b10d-4bfc-98a0-fb7b92efdd9a)
 
 * Actividad 4:
 > 
@@ -50,6 +73,7 @@
 ```
 
 ## Captura de pantalla representativa
+
 
 
 
