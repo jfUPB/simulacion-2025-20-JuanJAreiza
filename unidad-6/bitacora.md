@@ -56,11 +56,41 @@ flowfield = new FlowField(5);
 ![experimento (2)](https://github.com/user-attachments/assets/c5a3b522-b10d-4bfc-98a0-fb7b92efdd9a)
 
 * Actividad 4:
-> 
+> 1.1. __Separación:__ El objetivo es __evitar el amontonamiento y las colisiones__. El boid mira a los vecinos que están demasiado cerca (d < desiredSeparation) y calcula un vector que apunta lejos de cada vecino, que cambia por lo cerca que están (cuanto más cerca, más fuerza). Suma esos vectores, saca un promedio y lo convierte en una fuerza de steering restando la velocidad actual y limitando por maxforce.
+> 1.2. __Alineación:__ Busca que los boids __vayan en la misma dirección__ promedio. Para eso el boid toma las velocidades de los vecinos dentro de un radio (neighborDistance), las promedia, normaliza y las escala a la maxspeed. La fuerza de steering es la diferencia entre ese vector deseado y la velocidad actual, limitada por maxforce. Finalmente da la sensación de que el grupo __comparte una dirección general__.
+> 1.3. __Cohesión:__ Su objetivo es __mantener al grupo junto__, acercando a cada boid al “centro” de sus vecinos. El boid calcula la posición promedio de los vecinos (dentro de neighborDistance) y luego usa seek hacia ese punto: eso crea un vector hacia el centro, lo normaliza a maxspeed, resta la velocidad actual y lo limita por maxforce. Así tienden a __reunirse en torno a un centro común__ entre todos.
+
+> 2.1. __Radio de percepción:__ separación usa desiredSeparation = 25; alineación y cohesión usan neighborDistance = 50.
+
+> 2.2. __Pesos / multiplicadores:__ en flock() se aplican con sep.mult(1.5), ali.mult(1.0), coh.mult(1.0). Cada elemento controla la influencia que tiene en todos los boids.
+
+> 2.3. __Velocidad y fuerza máximas:__ this.maxspeed = 3 y this.maxforce = 0.05.
+
+> También algo que se puede considerar como muy influyente es el número de boids iniciales.
+
+> 3. En la función flock() __aumenté tanto la separación como la alineación__. Específicamente, pasé de sep.mult(1.5) a sep.mult(5.0) y de ali.mult(1.0) a ali.mult(2.0). Al darle tanto peso a la separación, los boids siguen evitando amontonarse, pero ahora la alineación fuerte hace que, aunque se alejen entre sí, todos tiendan a moverse en la misma dirección promedio. El resultado es que el enjambre se estira en formaciones más alargadas, casi como sub grupos que viajan juntos, pero con bastante espacio entre cada individuo.
+> Visualmente ya no aparenta un grupo compacto, sino un grupo grande del que se desprenden nuevos sub grupos que siguen respetando la dirección, pero no la formación, hasta que luego mas adelante vuelven a unirse al enjambre.
+
+> La sección modificada:
+
+> Antes:
+``` js
+sep.mult(1.5);
+ali.mult(1.0);
+```
+
+> Después:
+``` js
+sep.mult(5.0);
+ali.mult(2.0);
+```
+> Captura de pantalla con los vectores activados para ver:
+![experimento (5)](https://github.com/user-attachments/assets/d9792594-e826-46c8-9f50-a65039887fbc)
+
 
 ## Apply
 > Tu respuesta aquí:
-> La interacción se da principalmente con __el mouse__, que ejerce una __fuerza de atracción sobre el origen de los péndulos__. Según la posición del mouse en el Canvas, el origen se desplaza, generando variaciones adicionales en los trazos. Esa influencia no es igual en los dos ejes: en el eje X la fuerza está amplificada (*100), mientras que en el eje Y es más moderada (*50).
+> 
 
 ## Enlace a la obra en el editor de p5.js
 
@@ -73,6 +103,7 @@ flowfield = new FlowField(5);
 ```
 
 ## Captura de pantalla representativa
+
 
 
 
