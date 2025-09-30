@@ -95,6 +95,7 @@ ali.mult(2.0);
 > https://github.com/user-attachments/assets/f80d63b2-a5ff-4c49-9e6e-7a61960fa1fa
 
 > Otro punto de motivación fueron los juguetes que se veían mucho cuando estaba pequeño, que consistían en una caja de agua en donde se debía de encajar aros de colores en diferentes puntos por medio de impulsos de agua. Normalmente con fondos muy coloridos y llamativos. Estos juguetes en inglés tienen el nombre de Aqua Rings Toys, no sé muy bien como llamarlo en español Jajaj:
+
 > <img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/e1e3626d-184d-4d2b-985f-4d13ebc875d2" />
 
 > También tuve inspiración de diferentes escenas de películas de mi infancia como Nemo o La Sirenita.
@@ -103,7 +104,7 @@ ali.mult(2.0);
 
 ## Enlace a la obra en el editor de p5.js
 
-[Aquí está mi obra]()
+[Aquí está mi obra](https://editor.p5js.org/JuanJAreiza/sketches/4DnWdSSq_)
 
 ## Código de la obra 
 
@@ -112,6 +113,7 @@ ali.mult(2.0);
 ```
 
 ## Captura de pantalla representativa
+
 
 
 
