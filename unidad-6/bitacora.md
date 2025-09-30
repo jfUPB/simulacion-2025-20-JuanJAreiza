@@ -89,8 +89,17 @@ ali.mult(2.0);
 
 
 ## Apply
-> Tu respuesta aquí:
-> 
+> Busco inspirarme en una combinación de elementos acúaticos, como son:
+
+> Toda la inspiración nace desde un vídeo que ví en TikTok, donde se podían ver una gran cantidad de peces y colores muy bellos:
+> https://github.com/user-attachments/assets/f80d63b2-a5ff-4c49-9e6e-7a61960fa1fa
+
+> Otro punto de motivación fueron los juguetes que se veían mucho cuando estaba pequeño, que consistían en una caja de agua en donde se debía de encajar aros de colores en diferentes puntos por medio de impulsos de agua. Normalmente con fondos muy coloridos y llamativos. Estos juguetes en inglés tienen el nombre de Aqua Rings Toys, no sé muy bien como llamarlo en español Jajaj:
+> <img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/e1e3626d-184d-4d2b-985f-4d13ebc875d2" />
+
+> También tuve inspiración de diferentes escenas de películas de mi infancia como Nemo o La Sirenita.
+
+> A partir de eso, quería hacer una escena con mucho movimiento, pero que mi participación fuera puramente en visuales y que el fondo tuviera independencia en su vida y movimiento.
 
 ## Enlace a la obra en el editor de p5.js
 
@@ -103,6 +112,7 @@ ali.mult(2.0);
 ```
 
 ## Captura de pantalla representativa
+
 
 
 
