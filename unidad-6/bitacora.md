@@ -102,17 +102,206 @@ ali.mult(2.0);
 
 > A partir de eso, quería hacer una escena con mucho movimiento, pero que mi participación fuera puramente en visuales y que el fondo tuviera independencia en su vida y movimiento.
 
+> MOTHER - DANZIG, SHOULD I STAY OR SHOULD I GO
+
+Necesito que me crees un prompt basado en esta idea de creación para p5.js que escribí. Pregúntame todas las dudas que puedas quedar en el aire para que sea un prompt muy completo y claro:
+> HACERLO CON NODOS, TIENE QUE SONAR TODA LA CANCIÓN (La canción es Should I Stay or Should I Go). DIVIDIRLO EN 3 O 4 MOMENTOS: Primero, solo hay boids en un flow field que se mueven y el angulo de los vectores de flow field se mueven con la música, se puede influir en el movimiento (PENSAR MEJOR) (EL VOLUMÉN INFLUYE LA VELOCIDAD DE LOS BOIDS). Luego, con flocking (en el momento donde rompe la canción) poner un depredador que persigue a todos los boids. Sus logaritmos de alineación, cohesión y separación van a ser influidos por la posición del mouse. Para el tercer momento, que entren desde arriba "redes" o "figuras" que capturan a los peces y los sacan del Canvas, provocando que al final, no quede ninguno en escena, nisiquiera el depredador.
+
+CHATGPT ME DICE:
+🎵 GENERALIDADES SOBRE LA MÚSICA
+
+¿Tienes un archivo de audio específico de “Should I Stay or Should I Go”?
+
+¿Lo vas a cargar localmente o desde una URL?
+
+¿Hay problemas legales con el uso de esa canción? (Alternativamente, ¿quieres que sea una canción genérica con características similares?)
+
+¿Cuáles son los momentos de la canción que definen el cambio de escena?
+
+¿Tienes los timestamps de cuándo ocurren esos 3 o 4 momentos?
+
+¿Se usan cambios de volumen, ritmo, frecuencia o algo más para detectarlos?
+
+¿Se debe reproducir toda la canción sí o sí, o puede cortarse al terminar la animación?
+
+🌀 MOMENTO 1: BOIDS EN FLOW FIELD
+
+¿Qué tipo de flow field quieres?
+
+¿Perlin noise en 2D?
+
+¿Vector field generado por FFT (análisis de audio en frecuencia)?
+
+¿Qué tan denso debe ser el campo? (ej. 20x20, 40x40 celdas)
+
+Los boids:
+
+¿Tienen apariencia específica (colores, formas, partículas, etc.)?
+
+¿Tienen colas o efectos visuales (trails, glow, etc.)?
+
+"El volumen influye en la velocidad de los boids":
+
+¿Quieres que el volumen controle directamente la velocidad lineal?
+
+¿O que afecte la aceleración máxima o algún otro parámetro?
+
+¿Qué significa "se puede influir en el movimiento (PENSAR MEJOR)"?
+
+¿Quieres que el usuario pueda controlar algo más (con el mouse, teclas, etc.)?
+
+🦈 MOMENTO 2: DEPREDADOR Y FLOCKING
+
+¿El depredador tiene forma especial?
+
+¿Debe ser más grande, de otro color, con animación?
+
+¿Qué sucede si el depredador alcanza a un boid?
+
+¿Lo elimina? ¿Lo "absorbe"? ¿Solo lo persigue?
+
+"Logaritmos de alineación, cohesión y separación" influenciados por el mouse:
+
+¿Quieres que la posición del mouse controle directamente los pesos de esas fuerzas?
+
+Por ejemplo: eje X = alineación, eje Y = cohesión, clic = separación
+
+¿O que el mouse atraiga/repela a los boids?
+
+¿El depredador también es un boid con flocking o es una entidad totalmente distinta?
+
+🕸 MOMENTO 3: REDES O FIGURAS QUE ATRAPAN
+
+¿Qué forma tienen estas "redes"?
+
+¿Son figuras geométricas, formas orgánicas, animaciones?
+
+¿Caen desde arriba con gravedad o de forma controlada?
+
+¿Cómo “capturan” a los boids?
+
+¿Colisión directa?
+
+¿A través de un área de atracción?
+
+¿Animación tipo trampa?
+
+¿Qué pasa con los boids capturados?
+
+¿Desaparecen?
+
+¿Se los lleva la red fuera del canvas?
+
+¿Cuántas redes deben aparecer? ¿Una gran red al final o múltiples redes pequeñas?
+
+¿También debe desaparecer el depredador?
+
+¿Es capturado o desaparece de otra forma?
+
+🌟 FINAL
+
+¿Hay un efecto final?
+
+¿El canvas queda vacío?
+
+¿Una transición visual, cambio de color, fade out?
+
+¿Debe reiniciarse la animación o termina definitivamente?
+
+⚙️ OTROS DETALLES TÉCNICOS
+
+¿Tamaño del canvas? ¿Es responsive?
+
+¿Modo de visualización? ¿Pantalla completa? ¿Integrado en una web?
+
+¿Quieres usar la librería de p5.js pura o alguna extensión (como p5.sound, p5.gui, etc.)?
+
+¿Te interesa que esto sea interactivo para otros usuarios, como en una web pública?
+
+
+
+
+YO RESPONDO:
+1. Se va a cargar localmente. Y no, no hay problemas legales.
+2. Sí. La canción completa dura: 3 min 9 seg (3:09). Primer momento iría de: 0 a 1:07. Segundo momento iría de: 1:08 a 2:21. Tercer momento iría de: 2:22 a 3:09.
+3. Tiene que sonar toda la canción sí o sí.
+4. El flowfield que manejan en Nature of Code, que esté influenciado por el FFT. Y el campo debe tener una densidad de 25x25.
+5. Sí, los boids son pequeños ovalos con trails. Cada uno con cada color y los trails con glow.
+6. Sí, quiero que el volúmen afecte la velocidad lineal directamente.
+7. 
+
+
 ## Enlace a la obra en el editor de p5.js
 
-[Aquí está mi obra](https://editor.p5js.org/JuanJAreiza/sketches/4DnWdSSq_)
+[Aquí está mi obra]()
 
 ## Código de la obra 
 
 ``` js
+LÓGICA PARA CAMBIAR DE MOMENTO:
+let momento = 0;  // Variable que controla el estado o momento
+let tiempoCambio = 0;
+
+function setup() {
+  createCanvas(400, 400);
+  tiempoCambio = millis();  // Guardamos el tiempo inicial
+}
+
+function draw() {
+  background(220);
+  
+  // Cambiar de momento automáticamente cada 5 segundos
+  if (millis() - tiempoCambio > 5000) {
+    momento++;
+    if (momento > 2) momento = 0;  // Reinicia el ciclo de momentos
+    tiempoCambio = millis();       // Reinicia el contador de tiempo
+  }
+
+  // Lógica por momento
+  switch (momento) {
+    case 0:
+      momentoUno();
+      break;
+    case 1:
+      momentoDos();
+      break;
+    case 2:
+      momentoTres();
+      break;
+  }
+}
+
+function momentoUno() {
+  fill(255, 0, 0);
+  ellipse(width/2, height/2, 100);
+  text("Momento 1: Círculo rojo", 10, 20);
+}
+
+function momentoDos() {
+  fill(0, 255, 0);
+  rect(100, 100, 200, 200);
+  text("Momento 2: Cuadro verde", 10, 20);
+}
+
+function momentoTres() {
+  fill(0, 0, 255);
+  triangle(200, 100, 300, 300, 100, 300);
+  text("Momento 3: Triángulo azul", 10, 20);
+}
+
+
+LÓGICA PARA HACERLO MANUAL:
+function keyPressed() {
+  if (key === ' ') {  // Espacio para avanzar de momento
+    momento++;
+    if (momento > 2) momento = 0;
+  }
+}
 
 ```
 
 ## Captura de pantalla representativa
+
 
 
 
