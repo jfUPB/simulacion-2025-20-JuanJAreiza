@@ -64,7 +64,7 @@
 
 ## Enlace a la obra en el editor de p5.js
 
-[Aquí está mi obra](https://jumpshare.com/s/IuL4qzIbzKhG2AacVZ2x)
+[Aquí está mi obra]()
 
 ## Código de la obra 
 
@@ -77,5 +77,6 @@
 
 ## Autoevaluación:
 __Mi nota es:__ 
+
 
 
