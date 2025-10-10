@@ -31,22 +31,32 @@
 
 * __Actividad 2.__
 
-> Time Scaling, Sprites, Sensors, Gyroscope, Composite Manipulation, 
+> Recursos de demos que me llamaron la atención: Time Scaling, Sprites, Sensors, Gyroscope, Composite Manipulation, 
 
-> La sección modificada:
+#### Experimentos:
 
-> Antes:
-``` js
+> * __Experimento 1:__
+<img width="1001" height="748" alt="image" src="https://github.com/user-attachments/assets/51271b54-70bf-45bb-a08a-1f66b0db3f22" />
 
-```
+> [Mi experimento 1 | GIF](https://jumpshare.com/s/IuL4qzIbzKhG2AacVZ2x)
 
-> Después:
-``` js
+> * __Experimento 2:__
+<img width="1003" height="754" alt="image" src="https://github.com/user-attachments/assets/d65047e2-a614-49cd-b08e-6aa8f1061b62" />
 
-```
-> Captura de pantalla con los vectores activados para ver:
+> [Mi experimento 2 | GIF](https://jumpshare.com/s/57Oq8Jjv34FQAtFMmkW5)
 
+#### Conceptos:
+> * __Engine:__ Es el motor físico principal de Matter.js. Se encarga de calcular todas las fuerzas, colisiones, aceleraciones y movimientos dentro del mundo.
 
+> * __World:__ Es el contenedor donde existen todos los objetos físicos (cuerpos, restricciones, etc.). Los Bodies y Constraints deben agregarse al World para que el motor los procese.
+
+> * __Bodies:__ Representan los objetos físicos del mundo. Desde formas simples (rectángulos, círculos, polígonos) a complejas, y tienen las mismas propiedades físicas que hemos trabajado: masa, fricción, restitución, densidad, etc.
+
+> * __Constraint:__ Es una unión entre dos cuerpos. Nos permite conectar 2 o más bodies con simulaciones de resortes, cuerdas o bisagras.
+
+> * __MouseConstraint:__ Permite interactuar con los cuerpos usando el mouse: arrastrarlos, empujarlos, etc.
+ 
+> __Dificultades que experimenté:__ Al configurar Matter.js por primera vez, una de las principales dificultades fue entender la diferencia entre los módulos (Engine, World, Render, Runner) y cómo deben inicializarse y conectarse correctamente. Además el agregar su biblioteca al HTML me generó errores inicialmente.
 
 ## Apply
 
@@ -54,7 +64,7 @@
 
 ## Enlace a la obra en el editor de p5.js
 
-[Aquí está mi obra]()
+[Aquí está mi obra](https://jumpshare.com/s/IuL4qzIbzKhG2AacVZ2x)
 
 ## Código de la obra 
 
@@ -67,4 +77,5 @@
 
 ## Autoevaluación:
 __Mi nota es:__ 
+
 
