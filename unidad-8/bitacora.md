@@ -31,36 +31,26 @@
 
 * __Actividad 2.__
 
-> 1. dffs
+> 1. La canción que usaré para dar vida a la composición será: __Blitzkrieg Bop__ de __The Ramones__. [Aquí está la canción en Youtube](https://www.youtube.com/watch?v=NQDPx_k66w4)
 
-> 2. gdfgd
+> 2. Quiero conseguir una visual que se sienta entre organica y con mucha influencia del estilo Brutalista del diseño gráfico. Líneas y que se sienta entre futurista grunge, pero con el suficiente movimiento para representar la intensidad y ritmo crudo de mi selección musical.
 
-> 3. dgfdgd
+> 3. Quiero usar el mouse por ser una herramienta rápida y fácil de usar. Pienso primeramente en los clicks y la rueda del mouse. También algunas teclas que puedan accionar comportamientos variados y complementarios de la escena para seguir una parte mucho mas mélodica.
 
-> 4. hf
+> 4. Tengo pensado usar __Partículas__ para complementar los espacios y generar cuerpos reactivos a la música. La obra va a partir de una __generación fractal__ como la vista en clase y vista en varias referencias buscadas por mi parte, para crear simetrias y figuras particulares por cada generación. Quiero usar una geometría polar, para que todo el movimiento se sienta comprimido en el centro con posibilidad de dispersarse por todo el Canvas. Para que esta estructura se sienta viva y reaccione a la música, pienso usar __Ruido Perlin__. La idea inicial es que la fuerza de la canción, cambie la amplitud de este. Tengo pensado en que se generen 5 estructuras de forma predeterminada, pensado mucho en el estilo Brutalism y de ahí se generen las distorsiones con la música y por el usuario. Para que los cambios de cada estructura sean suaves/interpolados, tengo pensado usar __Lerp__.
 
-> 5. fgdg
+> 5. __Mis bocetos:__
+> <img width="1396" height="1508" alt="12" src="https://github.com/user-attachments/assets/32a859cd-cc05-4734-ab1d-a2c92550e75f" />
+> <img width="1396" height="980" alt="13" src="https://github.com/user-attachments/assets/31d7ab48-1161-4497-840c-48e54cdac7aa" />
 
-> __1. Palabra elegida__
-
----
-
-> __2. Idea conceptual__
-
-
----
-
-__3. Aspectos técnicos clave__
-
-### Formación de las letras
-- Cada letra de la palabra "Ansiedad" se representa con un __cuerpo rígido (rectangle)__ de Matter.js.
-- Las letras se colocan inicialmente en posiciones ancladas en el centro del lienzo y __se lanzan con un pequeño desplazamiento aleatorio__ para generar dinamismo.
-- Cada letra tiene un __constraint tipo resorte__ que la conecta a su posición de anclaje, permitiendo que rebote y oscile de manera física, __simulando la tensión muscular y el temblor__.
+> Los inputs van a afectar los colores, la densidad de trazos, la cantidad de figuras y sus propias formas para dar variedad constante a toda la escena. Especificamente (será llenado cuando sepa que usar):
+> * Click para cambiar de interpretación geométrica y generación de partículas momentáneas
+> * Rueda del mouse para cambiar la cantidad de lados de la figura
+> * Flechas arriba y abajo para velocidad y rango de color
+> * Q y A para cambiar la densidad de estela
 
 
 ---
-
-
 
 
 ## Apply
@@ -84,3 +74,4 @@ __3. Aspectos técnicos clave__
 
 ## Autoevaluación:
 __Mi nota es:__ __5,0__. Porque...
+
